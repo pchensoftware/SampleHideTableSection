@@ -20,31 +20,31 @@
 
 - (id)init
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
-    }
-    return self;
+   self = [super initWithStyle:UITableViewStyleGrouped];
+   if (self) {
+   }
+   return self;
 }
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Toggle" style:UIBarButtonItemStyleDone target:self action:@selector(_toggleButtonTapped)];
-    
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"CellId"];
-    
-    self.hideSection = NO;
+   [super viewDidLoad];
+   
+   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Toggle" style:UIBarButtonItemStyleDone target:self action:@selector(_toggleButtonTapped)];
+   
+   [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"CellId"];
+   
+   self.hideSection = NO;
 }
 
 - (void)setHideSection:(BOOL)hideSection {
-    _hideSection = hideSection;
-    
-    if ([self isViewLoaded]) {
-        [self.tableView beginUpdates];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kHideableSection] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
-    }
+   _hideSection = hideSection;
+   
+   if ([self isViewLoaded]) {
+      [self.tableView beginUpdates];
+      [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kHideableSection] withRowAnimation:UITableViewRowAnimationFade];
+      [self.tableView endUpdates];
+   }
 }
 
 //==================================================
@@ -53,55 +53,61 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 5;
+   return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+   return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == kHideableSection) {
-        if (self.hideSection)
-            return nil;
-    }
-    return [NSString stringWithFormat:@"Section %d", section];
+   if (section == kHideableSection) {
+      if (self.hideSection)
+         return nil;
+   }
+   return [NSString stringWithFormat:@"Section %d", section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == kHideableSection) {
-        if (self.hideSection)
-            return 0.01;
-    }
-    return UITableViewAutomaticDimension;
+   if (section == kHideableSection) {
+      if (self.hideSection)
+         return 0.01;
+   }
+   return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == kHideableSection) {
-        if (self.hideSection)
-            return 0.01;
-    }
-    return UITableViewAutomaticDimension;
+   if (section == kHideableSection) {
+      if (self.hideSection)
+         return 0.01;
+   }
+   return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == kHideableSection) {
-        if (self.hideSection)
-            return 0;
-    }
-    return UITableViewAutomaticDimension;
+   if (indexPath.section == kHideableSection) {
+      if (self.hideSection)
+         return 0.01;
+   }
+   return UITableViewAutomaticDimension;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellId" forIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"Section %d, Row %d", indexPath.section, indexPath.row];
-    return cell;
+   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellId" forIndexPath:indexPath];
+   cell.textLabel.text = [NSString stringWithFormat:@"Section %d, Row %d", indexPath.section, indexPath.row];
+   return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+   if (indexPath.section == kHideableSection) {
+      cell.hidden = self.hideSection;
+   }
 }
 
 - (void)_toggleButtonTapped {
-    self.hideSection = ! self.hideSection;
+   self.hideSection = ! self.hideSection;
 }
 
 @end
